@@ -13,12 +13,19 @@ public class PlayerMovement : MonoBehaviour
         DirectPostitionChange
     }
 
+    // The Speed variable can be used in each of the 5 Movement Variants
     [SerializeField] private float speed = 3f;
 
+    // The rigidbody is only used in two of the five Variants
+    // If the rigidbody is used, the Physics System is also being used! 
     private Rigidbody2D body;
 
+    // The 2D Vector saves your Movement in both X and Y direction is an "easier" way
+    // than checking for each of the buttons pressed. This should also work with gamepads without changes! 
     private Vector2 axisMovement;
 
+    // We can change this variable to change the Movement Type we wish to use
+    // This should be changed in the inspector
     [SerializeField] private MovementType movementType = MovementType.RigidbodyVelocity;
 
     // Start is called before the first frame update
@@ -49,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // The Rigidbody Movement Methods are inside the FixedUpdate
+    // because they are Physics based which ought to go into this method
     private void FixedUpdate()
     {
         if(movementType == MovementType.RigidbodyVelocity)
@@ -72,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
 
     #endregion
 
+
     #region Movement 2: Rigidbody Force
 
     private void RigidbodyAddForce()
@@ -82,22 +92,35 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
 
+    #region Movement 3: Vector Move Towards
+
     private void MoveTowards()
     {
         transform.position = Vector2.MoveTowards(transform.position,
             transform.position + (Vector3)axisMovement, speed * Time.deltaTime);
     }
 
+    #endregion
+
+
+    #region Movement 4: Transform Translate
 
     private void Translate()
     {
         transform.Translate(axisMovement * speed * Time.deltaTime);
     }
 
+    #endregion
+
+
+    #region Movement 5: Direct Position Change
+
 
     private void PositionChange()
     {
         transform.position += (Vector3)axisMovement * Time.deltaTime * speed;
     }
+
+    #endregion
 
 }
